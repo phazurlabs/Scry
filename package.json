@@ -1,0 +1,61 @@
+{
+  "name": "@phazur/scry",
+  "version": "1.0.0",
+  "description": "A security and discernment layer for Claude Code skills. Scry scans third-party skills for supply-chain and injection risks before you run them.",
+  "keywords": [
+    "claude-code",
+    "security",
+    "skills",
+    "supply-chain",
+    "static-analysis",
+    "prompt-injection",
+    "hooks"
+  ],
+  "license": "MIT",
+  "author": "Phazur Labs",
+  "homepage": "https://github.com/phazurlabs/scry",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phazurlabs/scry.git"
+  },
+  "bugs": {
+    "url": "https://github.com/phazurlabs/scry/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "scry": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "skill",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "picocolors": "^1.1.1",
+    "zod": "^3.23.8"
+  },
+  "//dependencies": "commander: argument parsing for the CLI surface. picocolors: zero-dep ANSI colors for the terminal report. zod: validates the on-disk lock.json and config so a corrupt file fails loudly rather than silently misbehaving. No other runtime deps; the scanner itself is pure Node + std lib so it runs fully offline.",
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "eslint": "^9.9.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.2.0",
+    "vitest": "^2.0.5"
+  }
+}

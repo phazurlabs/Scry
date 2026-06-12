@@ -1,0 +1,3 @@
+# Destination is declared, so SCRY001 is satisfied — but the description still
+# never mentions the network behavior, which is what SCRY008 flags.
+api.allowed-host.io

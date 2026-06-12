@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
+      # Tests include eval/precision.test.ts — the false-positive budget gate.
+      - name: Test (includes precision gate)
+        run: npm test
+
+      # Self-scan: Scry's own fixtures must not regress, and the malicious set
+      # must fail the CI gate (proving --ci exits non-zero on criticals).
+      - name: Verify --ci fails on a malicious skill
+        run: |
+          if node dist/cli.js audit fixtures/malicious/credential-theft --ci; then
+            echo "Expected --ci to exit non-zero on a critical finding" >&2
+            exit 1
+          fi
+          echo "OK: --ci correctly failed on a critical finding"
