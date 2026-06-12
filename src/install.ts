@@ -50,9 +50,30 @@ function isScryCommand(cmd: string): boolean {
 }
 
 function isScryGroup(group: HookGroup): boolean {
-  return (group.hooks ?? []).some(
-    (h) => typeof h.command === 'string' && isScryCommand(h.command),
+  // Defensive: a user or other tool may have written a malformed group. Anything
+  // that isn't a well-formed array of command hooks simply isn't ours.
+  const hooks = (group as { hooks?: unknown })?.hooks;
+  return (
+    Array.isArray(hooks) &&
+    hooks.some((h) => typeof h?.command === 'string' && isScryCommand(h.command))
   );
+}
+
+/**
+ * Return the `hooks` object from settings, or undefined when absent. Throws a
+ * clear, actionable error when `hooks` is present but the wrong shape, so the
+ * installer never crashes with a raw TypeError on otherwise-recoverable data.
+ */
+function hooksMap(
+  settings: Settings,
+  verb: string,
+): Record<string, HookGroup[]> | undefined {
+  const h = settings.hooks as unknown;
+  if (h === undefined) return undefined;
+  if (h === null || typeof h !== 'object' || Array.isArray(h)) {
+    throw new Error(`settings.json "hooks" must be an object; refusing to ${verb} it`);
+  }
+  return h as Record<string, HookGroup[]>;
 }
 
 /** The three event groups Scry installs, pointing at the given hooks dir. */
@@ -92,11 +113,13 @@ function serialize(settings: Settings): string {
 }
 
 /** Remove every Scry group from a settings object, pruning emptied containers. */
-function stripScry(settings: Settings): Settings {
-  if (!settings.hooks) return settings;
-  const hooks = settings.hooks;
+function stripScry(settings: Settings, verb = 'modify'): Settings {
+  const hooks = hooksMap(settings, verb);
+  if (!hooks) return settings;
   for (const event of Object.keys(hooks)) {
-    const kept = (hooks[event] ?? []).filter((g) => !isScryGroup(g));
+    const groups = hooks[event];
+    if (!Array.isArray(groups)) continue; // leave non-array values untouched
+    const kept = groups.filter((g) => !isScryGroup(g));
     if (kept.length === 0) delete hooks[event];
     else hooks[event] = kept;
   }
@@ -106,10 +129,16 @@ function stripScry(settings: Settings): Settings {
 
 /** Produce the settings object with Scry's block merged in (pure). */
 export function withScryHooks(settings: Settings, hooksDir: string): Settings {
-  const next = stripScry(structuredClone(settings));
+  const next = stripScry(structuredClone(settings), 'install');
   const block = scryBlock(hooksDir);
   next.hooks ??= {};
   for (const [event, group] of Object.entries(block)) {
+    const existing = next.hooks[event];
+    if (existing !== undefined && !Array.isArray(existing)) {
+      throw new Error(
+        `settings.json hooks.${event} must be an array; refusing to modify it`,
+      );
+    }
     next.hooks[event] ??= [];
     next.hooks[event].push(group);
   }
@@ -130,7 +159,13 @@ export function installHooks(
 ): InstallResult {
   const current = readSettings(settingsPath);
   const before = existsSync(settingsPath) ? readFileSync(settingsPath, 'utf8') : '';
-  const after = serialize(withScryHooks(current, hooksDir));
+  const merged = withScryHooks(current, hooksDir);
+  // Idempotent no-op: our block is already present and merging changed nothing,
+  // so leave the file (and its existing formatting) exactly as it is.
+  if (JSON.stringify(current) === JSON.stringify(merged)) {
+    return { before, after: before, changed: false };
+  }
+  const after = serialize(merged);
   const changed = before !== after;
   if (!opts.dryRun && changed) {
     mkdirSync(dirname(settingsPath), { recursive: true });
@@ -144,7 +179,7 @@ export function uninstallHooks(settingsPath: string): InstallResult {
   if (!existsSync(settingsPath)) return { before: '', after: '', changed: false };
   const current = readSettings(settingsPath);
   const before = readFileSync(settingsPath, 'utf8');
-  const stripped = stripScry(structuredClone(current));
+  const stripped = stripScry(structuredClone(current), 'clean');
   // If nothing but our block existed, the object may now be empty {}.
   const after = serialize(stripped);
   const changed = before !== after;
@@ -155,6 +190,9 @@ export function uninstallHooks(settingsPath: string): InstallResult {
 /** True when Scry hooks are present in the settings file. */
 export function isInstalled(settingsPath: string): boolean {
   const settings = readSettings(settingsPath);
-  const hooks = settings.hooks ?? {};
-  return Object.values(hooks).some((groups) => groups.some((g) => isScryGroup(g)));
+  const hooks = settings.hooks;
+  if (!hooks || typeof hooks !== 'object' || Array.isArray(hooks)) return false;
+  return Object.values(hooks).some(
+    (groups) => Array.isArray(groups) && groups.some((g) => isScryGroup(g)),
+  );
 }

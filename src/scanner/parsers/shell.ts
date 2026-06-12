@@ -27,7 +27,14 @@ export function extractHosts(line: string): string[] {
   URL_RE.lastIndex = 0;
   while ((m = URL_RE.exec(line)) !== null) {
     const rest = m[1] ?? '';
-    const host = rest.split(/[/?#:]/)[0] ?? '';
+    // Authority is everything before the path/query/fragment.
+    const authority = rest.split(/[/?#]/)[0] ?? '';
+    // The real host follows any `user:pass@` userinfo (the LAST @). Without
+    // this, `https://api.github.com:@evil.com/x` would report api.github.com
+    // and slip past an allowlist — the actual destination is evil.com.
+    const at = authority.lastIndexOf('@');
+    const hostPort = at >= 0 ? authority.slice(at + 1) : authority;
+    const host = hostPort.split(':')[0] ?? '';
     if (host) hosts.push(host.toLowerCase());
   }
   return hosts;

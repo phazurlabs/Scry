@@ -45,14 +45,23 @@ function walk(dir: string, root: string, out: string[]): void {
 
 function loadFile(abs: string, root: string): SkillFile {
   const rel = toPosix(relative(root, abs));
-  const size = statSync(abs).size;
   const ext = extname(abs).toLowerCase();
 
-  if (size > MAX_LOAD_BYTES) {
-    return { path: rel, abs, content: '', lines: [], isBinary: true, size, ext };
+  // A single unreadable entry (e.g. a dangling symlink) must never throw — that
+  // would fail the whole scan open and let an attacker suppress all findings by
+  // planting one broken symlink. Treat it as an opaque, empty file instead.
+  let size: number;
+  let buf: Buffer;
+  try {
+    size = statSync(abs).size;
+    if (size > MAX_LOAD_BYTES) {
+      return { path: rel, abs, content: '', lines: [], isBinary: true, size, ext };
+    }
+    buf = readFileSync(abs);
+  } catch {
+    return { path: rel, abs, content: '', lines: [], isBinary: true, size: 0, ext };
   }
 
-  const buf = readFileSync(abs);
   if (looksBinary(buf)) {
     return { path: rel, abs, content: '', lines: [], isBinary: true, size, ext };
   }

@@ -38,15 +38,25 @@ export interface GateDecision {
 
 const PKG = '@phazur/scry';
 
-function denyReason(skill: string, findings: Finding[]): string {
+/**
+ * Build the deny message. `ruleIds` is the authoritative list driving the block
+ * (from the lock or the scan); `findings` enriches each with file:line when
+ * available. The two can disagree if the rules changed between lock write and
+ * now, so the message and the override command are always grounded in `ruleIds`,
+ * never left blank.
+ */
+function denyReason(skill: string, ruleIds: string[], findings: Finding[]): string {
   const lines = [
     `Scry blocked this action. Skill "${skill}" has unallowed CRITICAL findings:`,
   ];
-  for (const f of findings) {
-    lines.push(`  • ${f.ruleId} ${f.file}:${f.line} — ${f.title}`);
+  const byRule = new Map<string, Finding>();
+  for (const f of findings) if (!byRule.has(f.ruleId)) byRule.set(f.ruleId, f);
+  for (const ruleId of ruleIds) {
+    const f = byRule.get(ruleId);
+    lines.push(f ? `  • ${f.ruleId} ${f.file}:${f.line} — ${f.title}` : `  • ${ruleId}`);
   }
   lines.push(`Review:   npx ${PKG} audit`);
-  const first = findings[0]?.ruleId ?? 'SCRYxxx';
+  const first = ruleIds[0] ?? 'SCRY001';
   lines.push(
     `Override (logged): npx ${PKG} allow ${first} ${skill} --reason "<why this is safe>"`,
   );
@@ -74,12 +84,13 @@ export function evaluateGate(input: HookInput): GateDecision {
   if (fresh) {
     const unallowed = unallowedCriticals(lock, skill.name);
     if (unallowed.length === 0) return { block: false };
-    // Block — enrich the message with file:line detail from a fresh scan.
+    // Block per the lock. Enrich the message with file:line from a fresh scan,
+    // but the decision and override command stay grounded in the lock's rule ids.
     const report = scanSkill(skill.dir);
     const findings = report.findings.filter(
       (f) => f.severity === 'critical' && !isAllowed(lock, skill.name, f.ruleId),
     );
-    return { block: true, reason: denyReason(skill.name, findings) };
+    return { block: true, reason: denyReason(skill.name, unallowed, findings) };
   }
 
   // Unknown or changed: scan inline and refresh the lock (best effort).
@@ -97,7 +108,8 @@ export function evaluateGate(input: HookInput): GateDecision {
     (f) => f.severity === 'critical' && !isAllowed(lock, skill.name, f.ruleId),
   );
   if (findings.length === 0) return { block: false };
-  return { block: true, reason: denyReason(skill.name, findings) };
+  const ruleIds = [...new Set(findings.map((f) => f.ruleId))];
+  return { block: true, reason: denyReason(skill.name, ruleIds, findings) };
 }
 
 function emitDeny(reason: string): void {

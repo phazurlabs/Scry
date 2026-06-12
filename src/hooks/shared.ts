@@ -59,13 +59,38 @@ export function resolveSkill(input: HookInput): DiscoveredSkill | null {
 
   let best: DiscoveredSkill | null = null;
   for (const skill of skills) {
-    const byDir = text.includes(skill.dir);
-    const byName = new RegExp(`skills/${escapeRegex(skill.name)}(/|["'\\s]|$)`).test(
-      text,
-    );
-    if (byDir || byName) {
-      if (!best || skill.dir.length > best.dir.length) best = skill;
-    }
+    if ((matchesDir(text, skill.dir) || matchesName(text, skill.name)) === false)
+      continue;
+    if (!best || skill.dir.length > best.dir.length) best = skill;
   }
   return best;
+}
+
+/**
+ * The skill's absolute dir appears in the action, followed by a path boundary.
+ * The boundary check prevents `/skills/foo` from matching a sibling like
+ * `/skills/foo.backup` or `/skills/foo-bar`, which would mis-resolve the skill.
+ */
+function matchesDir(text: string, dir: string): boolean {
+  let from = 0;
+  for (;;) {
+    const idx = text.indexOf(dir, from);
+    if (idx < 0) return false;
+    const after = text[idx + dir.length];
+    if (
+      after === undefined ||
+      after === '/' ||
+      after === '"' ||
+      after === "'" ||
+      /\s/.test(after)
+    ) {
+      return true;
+    }
+    from = idx + 1;
+  }
+}
+
+/** The action references `skills/<name>/` (or name at a boundary). */
+function matchesName(text: string, name: string): boolean {
+  return new RegExp(`skills/${escapeRegex(name)}(/|["'\\s]|$)`).test(text);
 }

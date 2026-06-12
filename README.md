@@ -188,8 +188,9 @@ npx @phazur/scry uninstall            # remove hooks from settings.json
 npx @phazur/scry uninstall --purge    # also delete .scry/
 ```
 
-Uninstall restores your `settings.json` to exactly what it was, minus Scry's
-block.
+Uninstall removes exactly Scry's block and nothing else; your other hooks and
+settings are left intact. A Scry-managed `settings.json` round-trips to its
+pre-install content (standard 2-space JSON).
 
 ## License
 

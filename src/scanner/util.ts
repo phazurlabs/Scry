@@ -85,12 +85,16 @@ export function skillFinding(
  * Remove quoted/backticked spans from a line. Used to avoid matching a command
  * pattern that only appears inside a string literal — e.g. a notebook linter's
  * help text `"pip install detect-secrets"` is documentation, not a command.
+ *
+ * `includeSingle` controls single-quote stripping. Code rules want it (shell and
+ * Python use `'...'` string literals); prose rules (SCRY004) must NOT, because an
+ * apostrophe pair in English ("the user's role and the agent's job") would
+ * wrongly erase text between them.
  */
-export function dequote(line: string): string {
-  return line
-    .replace(/`[^`]*`/g, ' ')
-    .replace(/"[^"]*"/g, ' ')
-    .replace(/'[^']*'/g, ' ');
+export function dequote(line: string, includeSingle = true): string {
+  let out = line.replace(/`[^`]*`/g, ' ').replace(/"[^"]*"/g, ' ');
+  if (includeSingle) out = out.replace(/'[^']*'/g, ' ');
+  return out;
 }
 
 /** Strip shell/python/js line comments so we don't match inside comments. */

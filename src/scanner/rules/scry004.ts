@@ -90,7 +90,8 @@ export const rule: Rule = {
       if (file.isBinary || !TEXT_EXTS.has(file.ext)) continue;
       for (let i = 0; i < file.lines.length; i++) {
         const text = file.lines[i] ?? '';
-        const bare = dequote(text);
+        // Strip only double-quote/backtick citations, not apostrophes (prose).
+        const bare = dequote(text, false);
         const hit = { file, line: i + 1, text };
         for (const p of PATTERNS) {
           p.re.lastIndex = 0;

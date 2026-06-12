@@ -297,4 +297,9 @@ program
     }
   });
 
-program.parseAsync(process.argv);
+program.parseAsync(process.argv).catch((err: unknown) => {
+  // Surface a clean message (e.g. a permission error writing the lock, or a
+  // malformed settings.json) instead of an unhandled-rejection stack trace.
+  console.error(pc.red(`scry: ${err instanceof Error ? err.message : String(err)}`));
+  process.exit(1);
+});

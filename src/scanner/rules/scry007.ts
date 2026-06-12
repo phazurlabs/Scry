@@ -14,6 +14,7 @@
  *   pip install -r requirements.txt (resolved from a pinned file)
  */
 import type { Finding } from '../../report/schema.js';
+import { tokenize } from '../parsers/shell.js';
 import type { Rule, SkillContext } from '../types.js';
 import { isScript } from '../types.js';
 import { dequote, finding, stripComment } from '../util.js';
@@ -37,13 +38,6 @@ const PATTERNS: Pat[] = [
     remediation: 'Pin to an exact version.',
   },
   {
-    // pip install <pkg> with no version operator, not -r/-e/local path/URL.
-    re: /\bpip3?\s+install\s+(?!-r\b)(?!-e\b)(?!--requirement\b)(?![./])(?!git\+)(?!https?:)(?![^\n]*[=<>~!])[A-Za-z][\w.-]*/,
-    explanation: 'pip installs an unpinned package; the resolved version can change.',
-    remediation:
-      'Pin the version, e.g. pip install pkg==1.2.3, or use a pinned requirements file.',
-  },
-  {
     re: /\bgit\s+clone\b/,
     explanation: 'A git clone at runtime tracks a moving branch by default.',
     remediation:
@@ -55,6 +49,41 @@ const PATTERNS: Pat[] = [
     remediation: 'Use a pinned, vendored installer.',
   },
 ];
+
+const SHELL_SEP = new Set(['&&', '||', ';', '|', '&', '>', '>>', '<']);
+const PKG_VERSIONED = /[=<>~!]/;
+
+/**
+ * True when a `pip install` command on the line installs at least one package
+ * with no version pin. Tokenized (not regex) so that an unrelated `=`/`&&` later
+ * on the line, a second pinned package, or a leading flag cannot defeat it.
+ */
+function hasUnpinnedPip(code: string): boolean {
+  const tokens = tokenize(code);
+  for (let i = 0; i < tokens.length - 1; i++) {
+    if (!/^pip3?$/.test(tokens[i] ?? '') || tokens[i + 1] !== 'install') continue;
+    let usesRequirements = false;
+    const pkgs: string[] = [];
+    for (const arg of tokens.slice(i + 2)) {
+      if (SHELL_SEP.has(arg)) break; // command ends here
+      if (
+        arg === '-r' ||
+        arg === '--requirement' ||
+        arg === '-e' ||
+        arg === '--editable'
+      ) {
+        usesRequirements = true; // resolved from a pinned file / local checkout
+      } else if (arg.startsWith('-')) {
+        continue; // other flag (e.g. --upgrade)
+      } else if (!/^(\.|\/|git\+|https?:)/.test(arg)) {
+        pkgs.push(arg); // a package name (not a path or VCS/URL)
+      }
+    }
+    if (usesRequirements) continue;
+    if (pkgs.some((p) => !PKG_VERSIONED.test(p))) return true;
+  }
+  return false;
+}
 
 export const rule: Rule = {
   id: 'SCRY007',
@@ -72,6 +101,19 @@ export const rule: Rule = {
         // string (help text, docstring) is not an actual install command.
         const code = dequote(stripComment(file.lines[i] ?? ''));
         const hit = { file, line: i + 1, text: file.lines[i] ?? '' };
+
+        if (hasUnpinnedPip(code)) {
+          findings.push(
+            finding(
+              this,
+              hit,
+              'pip installs an unpinned package; the resolved version can change.',
+              'Pin the version (pip install pkg==1.2.3) or use a pinned requirements file.',
+            ),
+          );
+          continue;
+        }
+
         for (const p of PATTERNS) {
           p.re.lastIndex = 0;
           if (p.re.test(code)) {

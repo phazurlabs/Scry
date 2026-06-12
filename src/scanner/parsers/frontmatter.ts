@@ -51,7 +51,13 @@ export function parseFrontmatter(markdown: string): Frontmatter | null {
     // description reads as empty and trips SCRY008 falsely.
     if (/^[|>][+-]?$/.test(value)) {
       const collected: string[] = [];
-      while (i + 1 < lines.length && /^\s+\S/.test(lines[i + 1] ?? '')) {
+      // The block continues through indented lines AND blank lines (blank lines
+      // are legal inside a YAML block scalar); it ends only at the next
+      // top-level key or end of block. Truncating at the first blank line would
+      // silently drop later paragraphs of a description.
+      while (i + 1 < lines.length) {
+        const next = lines[i + 1] ?? '';
+        if (next.trim() !== '' && !/^\s/.test(next)) break;
         collected.push((lines[++i] ?? '').trim());
       }
       raw[key] = collected.join(value.startsWith('>') ? ' ' : '\n').trim();
