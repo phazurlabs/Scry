@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/banner.svg" alt="Scry — see what's hidden in your Claude Code skills before you run them" width="100%" />
+<img src="assets/banner.svg" alt="Scry — see what's hidden in your agent's skills before you run them" width="100%" />
 
 <br/>
 
@@ -18,7 +18,7 @@ enforced, accountable, and revocable.**
 
 <br/>
 
-[**Quickstart**](#-quickstart) · [**How it works**](#-how-it-works) · [**The 10 rules**](#-the-ten-rules) · [**CI**](#use-it-in-ci) · [**Limitations**](#-limitations--read-this)
+[**Quickstart**](#-quickstart) · [**How it works**](#-how-it-works) · [**The 10 rules**](#-the-ten-rules) · [**CI**](#use-it-in-ci) · [**FAQ**](#-faq) · [**Limitations**](#-limitations--read-this)
 
 </div>
 
@@ -35,10 +35,17 @@ npx @phazur/scry init
 
 ## ◇ Why this exists
 
-A Claude Code skill is third-party code that runs on your machine with your agent's
-permissions. Installing one is a supply-chain decision — yet today the trust you place in it is
-**implicit, one-time, and invisible.** There is no point where a policy is checked, no record
-of what you accepted, and no alarm when a skill changes under you. You install, and it runs.
+An [agent skill](https://www.anthropic.com/news/skills) — a folder with a `SKILL.md` and the
+scripts it ships — is third-party code that runs on your machine with your agent's permissions.
+Installing one is a supply-chain decision — yet today the trust you place in it is **implicit,
+one-time, and invisible.** There is no point where a policy is checked, no record of what you
+accepted, and no alarm when a skill changes under you. You install, and it runs.
+
+The `SKILL.md` format is **open and portable** — the same skill runs under Claude Code, the
+Claude apps, the Agent SDK, and a growing set of other agents. Scry's scanner reads that format
+directly, so it is **host-agnostic**: point it at any skill folder, anywhere. The enforcement
+**gate** ships first for **Claude Code**, the host with a documented policy-enforcement hook;
+the lock and report are host-neutral, so new hosts plug in behind the same loop.
 
 Scrying is the ancient art of discernment — seeing what's concealed before you act on it. Scry
 is the gate that makes that discernment a real step: it turns blind trust into a decision that
@@ -286,10 +293,14 @@ Every rule maps to a documented threat class. If a rule can't cite one, it doesn
 ## ◷ Requirements & compatibility
 
 - **Node.js ≥ 20.**
-- **Claude Code** with the documented PreToolUse JSON hook output (the
-  `hookSpecificOutput.permissionDecision` field — see the
+- **The scanner is host-agnostic.** `scry scan` / `scry audit` read any `SKILL.md` skill
+  folder and need nothing but Node — no agent, no account, no network. Use it standalone, in
+  CI, or in a pre-commit hook regardless of which agent will eventually run the skill.
+- **The gate ships first for Claude Code**, using the documented PreToolUse JSON hook output
+  (the `hookSpecificOutput.permissionDecision` field — see the
   [hooks docs](https://code.claude.com/docs/en/hooks)). On any version that predates that
   format, the gate degrades gracefully to **advisory**: it still reports, it just can't block.
+  The lock and report are host-neutral, so a new host is a new adapter, not a new product.
 - Distributed on npm as `@phazur/scry` with a `scry` bin, so `npx @phazur/scry` works
   everywhere. Three runtime deps (`commander`, `picocolors`, `zod`); the scanner core is pure
   Node std-lib.
@@ -321,6 +332,70 @@ npx @phazur/scry uninstall --purge    # also delete .scry/
 
 Uninstall removes exactly Scry's block and nothing else; your other hooks and settings are left
 intact. A Scry-managed `settings.json` round-trips to its pre-install content.
+
+---
+
+## ? FAQ
+
+<details>
+<summary><b>Does Scry only work with Claude Code?</b></summary>
+
+<br/>
+
+No — the **scanner** works with any agent. It reads the open `SKILL.md` format off disk and
+needs nothing but Node, so `scry scan ./some-skill` gives you a verdict no matter which agent
+will run it. The **enforcing gate** (the part that actually _blocks_ an action) ships first for
+Claude Code because it has a documented PreToolUse hook to plug into. The lock file and report
+are host-neutral, so additional hosts are adapters behind the same loop.
+
+</details>
+
+<details>
+<summary><b>Why not just ask the model whether a skill is safe?</b></summary>
+
+<br/>
+
+Because prompt injection lives _inside_ the skill's own text — asking the agent to judge it is
+asking the thing being manipulated to referee its own manipulation. The arbiter has to be
+**external, deterministic, and LLM-free.** That's the structural reason Scry's core is what it
+is, not a stylistic one.
+
+</details>
+
+<details>
+<summary><b>Won't a static scanner either miss real attacks or drown me in false positives?</b></summary>
+
+<br/>
+
+Both are real failure modes, so Scry is tuned hard for **precision over recall** — it would
+rather miss a finding than cry wolf, because a gate nobody trusts gets uninstalled. It's
+validated against [41 real skills across 5 public repos with zero false-positive blocks](eval/corpus.md).
+The honest cost: novel or cleverly obfuscated behavior can pass. Scry shrinks the blast radius;
+it does not replace reading the code. See [Limitations](#-limitations--read-this).
+
+</details>
+
+<details>
+<summary><b>What happens if Scry itself has a bug?</b></summary>
+
+<br/>
+
+**Fail open on infrastructure, fail closed on findings.** If the scanner errors, it logs and
+allows — Scry never bricks your workflow over its own bug. Only a _confirmed_ unallowed critical
+blocks. And every block has a deliberate, logged escape hatch (`scry allow …`).
+
+</details>
+
+<details>
+<summary><b>Is it heavy? What does it pull in?</b></summary>
+
+<br/>
+
+Three runtime deps (`commander`, `picocolors`, `zod`); the scanner core is pure Node std-lib,
+runs fully offline, and is deterministic — same input, byte-identical report. A scan is
+sub-500 ms.
+
+</details>
 
 ---
 

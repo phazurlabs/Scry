@@ -1,8 +1,10 @@
 {
   "name": "@phazur/scry",
   "version": "1.0.0",
-  "description": "The discernment gate for Claude Code skills. Scry reads every third-party skill for supply-chain and injection risk, renders a verdict, and blocks your agent from running one with an unallowed critical — turning blind trust into an explicit, enforced, accountable decision.",
+  "description": "The discernment gate for agent skills. Scry reads every third-party SKILL.md skill for supply-chain and injection risk, renders a verdict, and blocks your agent from running one with an unallowed critical — turning blind trust into an explicit, enforced, accountable decision. Host-agnostic scanner; enforcing gate ships first for Claude Code.",
   "keywords": [
+    "agent-skills",
+    "ai-agents",
     "claude-code",
     "security",
     "skills",

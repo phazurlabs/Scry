@@ -33,7 +33,7 @@ const pkg = require('../package.json') as { version: string; name: string };
 const program = new Command();
 program
   .name('scry')
-  .description('See what is hidden in your Claude Code skills before you run them.')
+  .description("See what is hidden in your agent's skills before you run them.")
   .version(pkg.version);
 
 function emitReport(
