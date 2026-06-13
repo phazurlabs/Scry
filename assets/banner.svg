@@ -1,0 +1,44 @@
+<svg width="1280" height="360" viewBox="0 0 1280 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Scry — see what's hidden in your skills before you run them">
+  <defs>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#818cf8"/>
+      <stop offset="0.55" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#34d399"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.7">
+      <stop offset="0" stop-color="#1b2233"/>
+      <stop offset="1" stop-color="#0b0e14"/>
+    </radialGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#22d3ee" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#34d399" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="360" rx="20" fill="url(#glow)"/>
+
+  <!-- scrying orb: concentric rings behind the wordmark -->
+  <g stroke="url(#accent)" fill="none" opacity="0.16">
+    <circle cx="640" cy="150" r="150" stroke-width="1.5"/>
+    <circle cx="640" cy="150" r="108" stroke-width="1.5"/>
+    <circle cx="640" cy="150" r="66" stroke-width="1.5"/>
+  </g>
+  <!-- the eye / pupil -->
+  <circle cx="640" cy="150" r="20" fill="url(#accent)" opacity="0.9"/>
+  <circle cx="640" cy="150" r="9" fill="#0b0e14"/>
+
+  <text x="640" y="252" text-anchor="middle"
+        font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+        font-size="112" font-weight="800" letter-spacing="22" fill="url(#accent)">SCRY</text>
+
+  <rect x="440" y="278" width="400" height="2" rx="1" fill="url(#rule)"/>
+
+  <text x="640" y="312" text-anchor="middle"
+        font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+        font-size="22" font-weight="500" letter-spacing="1" fill="#c9d4e3">See what's hidden in your Claude Code skills — before you run them.</text>
+
+  <text x="640" y="342" text-anchor="middle"
+        font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace"
+        font-size="13" letter-spacing="3" fill="#5b6577">DETERMINISTIC · OFFLINE · AUDITABLE</text>
+</svg>
