@@ -3,7 +3,7 @@ name: scry
 description: Use whenever the user installs, evaluates, inspects, downloads, or runs a third-party Claude Code skill, or asks whether a skill is safe or trustworthy. Runs the deterministic Scry scanner to surface supply-chain and injection risks before the skill executes, and narrates the resulting Discernment Report. Trigger on phrases like "install this skill", "is this skill safe", "add a skill", "run this skill", "review this skill".
 ---
 
-# Scry — discernment layer for skills
+# Scry — the discernment gate for skills
 
 Skills execute. They don't think. Your job is to make sure the user has _scried_
 a third-party skill — seen what's concealed inside it — before trusting it.

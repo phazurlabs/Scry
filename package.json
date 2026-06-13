@@ -1,7 +1,7 @@
 {
   "name": "@phazur/scry",
   "version": "1.0.0",
-  "description": "A security and discernment layer for Claude Code skills. Scry scans third-party skills for supply-chain and injection risks before you run them.",
+  "description": "The discernment gate for Claude Code skills. Scry reads every third-party skill for supply-chain and injection risk, renders a verdict, and blocks your agent from running one with an unallowed critical — turning blind trust into an explicit, enforced, accountable decision.",
   "keywords": [
     "claude-code",
     "security",

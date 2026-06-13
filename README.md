@@ -4,9 +4,10 @@
 
 <br/>
 
-**A deterministic security scanner and hard gate for third-party Claude Code skills.**
-Read every skill for supply-chain and prompt-injection risk, get a signed Discernment Report,
-and block a skill action the moment a confirmed critical risk appears.
+**The discernment gate for your agent's skills.**
+Scry reads every third-party skill, renders a verdict you can act on, and won't let your agent
+run one that hides a critical risk — turning blind trust into a decision that is **explicit,
+enforced, accountable, and revocable.**
 
 <br/>
 
@@ -35,19 +36,24 @@ npx @phazur/scry init
 ## ◇ Why this exists
 
 A Claude Code skill is third-party code that runs on your machine with your agent's
-permissions. Installing one is a supply-chain decision — yet today there is no judgment layer
-between _"add this skill"_ and _"this skill reads `~/.ssh/id_rsa` and POSTs it to an unknown
-host."_
+permissions. Installing one is a supply-chain decision — yet today the trust you place in it is
+**implicit, one-time, and invisible.** There is no point where a policy is checked, no record
+of what you accepted, and no alarm when a skill changes under you. You install, and it runs.
 
-Scry is that layer. The seatbelt you put on **before** the skill drives.
+Scrying is the ancient art of discernment — seeing what's concealed before you act on it. Scry
+is the gate that makes that discernment a real step: it turns blind trust into a decision that
+is **explicit** (a verdict exists), **enforced** (the gate blocks at the moment of action),
+**accountable** (exceptions are logged with a reason and an author), and **revocable** (trust
+expires when a skill changes).
 
 <table>
-<thead><tr><th width="50%">Without Scry</th><th width="50%">With Scry</th></tr></thead>
+<thead><tr><th width="50%">Trust without Scry</th><th width="50%">Trust through Scry</th></tr></thead>
 <tbody>
-<tr><td>Skills run unread; trust is implicit</td><td>Every skill is scanned and graded before use</td></tr>
-<tr><td>Malicious behavior surfaces <em>after</em> the damage</td><td>A confirmed critical is blocked at the gate</td></tr>
-<tr><td>"Is this safe?" is a vibe</td><td>"Is this safe?" is a report with <code>file:line</code> and a threat-class citation</td></tr>
-<tr><td>Review doesn't scale</td><td>One command audits every installed skill, offline</td></tr>
+<tr><td>Implicit — install and it runs, unread</td><td>Explicit — every skill carries a verdict before use</td></tr>
+<tr><td>Found out <em>after</em> the damage</td><td>A confirmed critical is blocked at the gate</td></tr>
+<tr><td>"Is this safe?" is a vibe</td><td>A report with <code>file:line</code> and a threat-class citation</td></tr>
+<tr><td>Permanent — trusted forever on first use</td><td>Revocable — a changed skill is re-audited before its next use</td></tr>
+<tr><td>Silent exceptions</td><td>Overrides are logged with who, when, and why</td></tr>
 </tbody>
 </table>
 
@@ -78,6 +84,28 @@ Plain, commented TypeScript. The trust model is a skeptical engineer reading the
 </td>
 </tr>
 </table>
+
+---
+
+## ◬ More than a scanner
+
+A scanner finds and reports. Scry does that — and then closes the loop into a control:
+
+- **Sensor** — ten deterministic rules read each skill and produce a verdict _(the scanner)._
+- **Gate** — a PreToolUse hook **enforces** that verdict at the instant the skill runs.
+- **Ledger** — `.scry/lock.json` records content hashes, verdicts, and an **allowlist of
+  exceptions with who / when / why.**
+
+That triad — sense, enforce, record — is the same primitive every platform eventually grows
+for untrusted code: package signing & provenance, mobile app review & permissions, Kubernetes
+admission controllers, browser CSP. The agent-skill ecosystem doesn't have one yet. Scry is
+that primitive for the code your agent runs. The full thesis lives in
+[**docs/POSITIONING.md**](docs/POSITIONING.md).
+
+> [!NOTE]
+> The arbiter has to live **outside** the model. Prompt injection rides _inside_ the skill, so
+> the agent can't be trusted to judge it — which is exactly why Scry's core is deterministic
+> and LLM-free.
 
 ---
 
