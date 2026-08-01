@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * SCRY002 · critical · Credential & secret access.
  *

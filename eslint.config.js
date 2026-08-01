@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 // Flat ESLint config. Kept intentionally small: the trust model for Scry is a
 // human reading the source, so lint rules favor clarity over cleverness.
 import tseslint from 'typescript-eslint';

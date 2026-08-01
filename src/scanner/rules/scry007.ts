@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * SCRY007 · warn · Unpinned remote execution.
  *

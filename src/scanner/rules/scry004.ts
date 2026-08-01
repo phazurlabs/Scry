@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * SCRY004 · critical · Prompt-injection directives in SKILL.md / reference text.
  *

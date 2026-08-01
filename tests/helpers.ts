@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Test helpers: build in-memory SkillContexts so rule tests can assert against
  * exact crafted lines (the "should catch / must not catch" cases) without

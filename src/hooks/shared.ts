@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Shared plumbing for the hook handlers: read the JSON event from stdin, and
  * work out which installed skill (if any) a tool action touches.

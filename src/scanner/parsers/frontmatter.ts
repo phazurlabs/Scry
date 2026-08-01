@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Minimal YAML frontmatter reader. We only need top-level scalar keys from a
  * SKILL.md header (name, description, version), so we deliberately do NOT pull in

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * SCRY008 · warn · Frontmatter / manifest integrity.
  *

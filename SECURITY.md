@@ -1,48 +1,49 @@
 # Security Policy
 
-Scry is a security tool. We take vulnerabilities in it seriously — a flaw in a
-scanner or its gate can give a false sense of safety, which is worse than no tool
-at all.
-
 ## Reporting a vulnerability
 
-Please report security issues **privately**. Do not open a public issue for a
-vulnerability.
+**Do not open a public issue or pull request for a security vulnerability.**
 
-- Use GitHub's [private vulnerability reporting](https://github.com/phazurlabs/scry/security/advisories/new)
-  for this repository, or
-- email **security@phazurlabs.com** with the details.
+Report it privately by either:
 
-Include, where possible:
+- **GitHub Private Vulnerability Reporting** — use the **Security** tab on this
+  repository, then **Report a vulnerability**. This is the preferred channel.
+- **Email** — **security@phazurlabs.com**
 
-- a description of the issue and its impact,
-- a minimal reproduction (a fixture skill that demonstrates it is ideal),
-- the Scry version (`npx @phazur/scry --version`) and your Node version.
+Please include:
 
-We aim to acknowledge a report within 3 business days and to agree on a
-disclosure timeline with you. We will credit reporters who want credit.
+- A description of the issue and the impact you believe it has
+- The affected version, commit, or deployment
+- Steps to reproduce, or a proof of concept
+- Any suggested mitigation
 
-## What is in scope
+## What to expect
 
-- **Gate bypass** — a malicious skill that should be blocked by a critical rule
-  but is allowed through the PreToolUse hook.
-- **Scanner crashes that fail closed** — Scry is designed to fail _open_ on its
-  own infrastructure errors; a path that instead bricks a user's workflow is a
-  bug we want to know about.
-- **False negatives in a critical rule** — a realistic malicious pattern within a
-  documented threat class that a `critical` rule misses.
-- **Settings/lock tampering** — any way the installer corrupts or fails to
-  cleanly remove its `settings.json` block.
+| Stage | Target |
+|---|---|
+| Acknowledgement of your report | 3 business days |
+| Initial assessment and severity triage | 10 business days |
+| Fix or documented mitigation for critical issues | 90 days |
 
-## What is not a vulnerability
+We will keep you informed as the assessment progresses, and will credit you in the
+release notes when a fix ships — unless you ask us not to.
 
-- A skill doing something genuinely novel that static, deterministic analysis
-  cannot detect. Scry is a seatbelt, not a guarantee (see the README
-  Limitations). New attack shapes are feature requests for new rules, not
-  security holes — though we still want to hear about them.
-- An `info`/`warn` rule missing something. Those are advisory by design.
+## Disclosure
+
+We ask for coordinated disclosure: give us a reasonable window to ship a fix before
+publishing details. We will not pursue legal action against researchers who report in
+good faith, act within the scope below, and follow this policy.
+
+## Scope
+
+**In scope:** the source code in this repository and official released artifacts.
+
+**Out of scope:** vulnerabilities in third-party dependencies (report those upstream, and
+tell us so we can pin or patch), social engineering, physical attacks, denial of service
+through resource exhaustion, and findings from automated scanners without a demonstrated
+exploit.
 
 ## Supported versions
 
-Scry follows semantic versioning. Security fixes land on the latest minor
-release. Pin a version in CI and update deliberately.
+Security fixes are provided for the latest released version on the default branch. Older
+versions are not maintained unless separately agreed.

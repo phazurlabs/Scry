@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Audit orchestration shared by the CLI and init: scan a set of skills and fold
  * the results into the lock file, preserving the existing allowlist (the

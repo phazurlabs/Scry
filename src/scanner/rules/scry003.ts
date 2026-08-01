@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * SCRY003 · critical · Destructive or privileged shell.
  *

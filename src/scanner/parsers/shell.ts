@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Deliberately small shell + URL helpers. This is NOT a real shell parser — a
  * faithful POSIX parser is huge and the rules only need three cheap operations:

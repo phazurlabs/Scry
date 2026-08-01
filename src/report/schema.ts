@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Versioned, stable types for the Discernment Report. People will build on this
  * JSON, so the shape changes only with a bump to SCHEMA_VERSION.

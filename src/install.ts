@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Installs (and removes) Scry's hook entries in a Claude Code settings.json.
  *

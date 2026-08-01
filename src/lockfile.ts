@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * The lock file (.scry/lock.json) is Scry's memory between runs: for each skill
  * it records the content hash that was scanned, the verdict, the unallowed

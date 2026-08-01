@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * The false-positive budget gate. Prime Directive #1 is precision over recall:
  * every clean fixture must produce ZERO findings of severity warn or critical.

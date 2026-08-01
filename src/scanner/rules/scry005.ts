@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * SCRY005 · warn · Obfuscation signals in bundled code.
  *

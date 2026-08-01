@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Loads a skill directory into an in-memory SkillContext. This is the only place
  * the scanner touches the filesystem; rules operate purely on what we load here.

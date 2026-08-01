@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * The complete v1 rule set, in id order. Adding a rule means importing it here
  * and bumping CRITERIA_VERSION in report/schema.ts — nothing else discovers

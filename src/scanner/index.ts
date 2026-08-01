@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Scanner orchestration. Loads a skill, runs every rule over it, and assembles a
  * deterministic Discernment Report.

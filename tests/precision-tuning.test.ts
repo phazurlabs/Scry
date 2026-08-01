@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Regression tests for bugs found in code review and false positives found while
  * scanning real-world skill repos (see eval/corpus.md). Each case here previously

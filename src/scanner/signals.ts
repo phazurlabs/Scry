@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Cross-rule detectors. SCRY001 (network egress) and SCRY008 (description vs.
  * behavior) both need to agree on "does this line make a network call", so the

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Shared types for the scanner. Rules receive a fully pre-loaded SkillContext so
  * they never touch the filesystem themselves: every rule is a pure function of

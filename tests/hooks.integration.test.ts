@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * End-to-end PreToolUse gate tests. We stand up a throwaway environment with a
  * real malicious skill and a real lock, then drive the gate two ways:

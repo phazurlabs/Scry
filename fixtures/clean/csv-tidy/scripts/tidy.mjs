@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 // Tidy a CSV file locally: trim each row, drop blank lines. Pure filesystem.
 import { readFileSync, writeFileSync } from 'node:fs';
 

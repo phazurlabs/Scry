@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Resolves the locations Scry reads and writes: skills directories, the lock
  * file, and the settings.json that hooks are installed into. Everything is

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * SCRY001 · critical · Outbound network calls in bundled scripts.
  *

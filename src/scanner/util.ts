@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Small shared helpers for rules. Kept deliberately boring: a rule author should
  * be able to read this file in one pass and trust exactly what it does.

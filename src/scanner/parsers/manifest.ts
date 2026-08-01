@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Reader for an optional per-skill allow manifest. A skill author can declare the
  * domains their bundled scripts legitimately contact, turning SCRY001 network

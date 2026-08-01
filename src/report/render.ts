@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Renderers for the Discernment Report: terminal (colorized), markdown, and JSON.
  * The JSON renderer emits the report verbatim (it is the stable, versioned
